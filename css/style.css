@@ -1,0 +1,11 @@
+* {
+  margin: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+div.content canvas {
+  border: black 3px solid;
+  margin: 50px;
+}
+/*# sourceMappingURL=style.css.map */
