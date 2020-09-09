@@ -49,9 +49,45 @@ function random_value(min,max){
     return Math.floor(Math.random() * max) + min
 }
 
-for(var i = 0; i < n; i++){
-    atoms.push(new Atom(r, random_value(r,canvas.width), random_value(r,canvas.height), random_value(1,4), random_value(1,4)))
+function atom_distance(arr,el){
+    return Math.sqrt(Math.pow(el.pos_vector[0] - arr[0],2)+Math.pow(el.pos_vector[0] - arr[1],2))
 }
+
+function random_sign(){
+    let rand = Math.floor(Math.random() * 2)
+    return rand == 1 ? 1 : -1
+}
+
+function create_atoms(){
+    for(var i = 0; i < n; i++){
+        let atom_x
+        let atom_y
+        let flag = false
+        let same_pos_flag = false
+        while(flag != true){
+            same_pos_flag = false
+            atom_x = random_value(r,canvas.width)
+            atom_y = random_value(r,canvas.height)
+            console.log(atom_x,atom_y)
+            if(atom_x + r >= canvas.width || atom_y + r >= canvas.height)
+                continue
+            for(let j = 0; j < i; j++){
+                if(atom_distance([atom_x,atom_y],atoms[j]) < r){
+                    same_pos_flag = true
+                    break
+                }
+            }
+            if(same_pos_flag == true)
+                continue
+            flag = true
+        }
+
+        atom_vx = random_value(1,4) * random_sign()
+        atom_vy = random_value(1,4) * random_sign()
+        atoms.push(new Atom(r, atom_x, atom_y, atom_vx, atom_vy))
+    }
+}
+
 
 function draw_atoms(){
     ctx.clearRect(0,0, canvas.width, canvas.height)
@@ -68,6 +104,7 @@ function draw_atoms(){
     }
     window.requestAnimationFrame(draw_atoms)
 }
+create_atoms()
 window.requestAnimationFrame(draw_atoms)
 
 
