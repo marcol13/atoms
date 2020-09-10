@@ -2,11 +2,13 @@ var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
 atoms = []
-var n = 4 //ilość atomów
+var n = 15 //ilość atomów
 var r = 7 //promień atomów
+var d = 1/10*r // tolerancja zderzenia
 
 class Atom{
     m = 1 //masa
+    // collision = false
     constructor(r,x,y,vx,vy){
         this.r = r //promień
         this.pos_vector = [x,y] //wektor położenia
@@ -87,27 +89,30 @@ function create_atoms(){
     }
 }
 
-function check_colision(){
-    var d = 1/10*r // tolerancja zderzenia
-    for(const i of atoms){
-        for(const j of atoms){
-            if(i === j)
-                continue
-            // console.log(atom_distance(i.pos_vector,j.pos_vector))
-            if(2*r <= Math.abs(atom_distance(i.pos_vector,j.pos_vector)) && Math.abs(atom_distance(i.pos_vector,j.pos_vector)) <= 2*r + d){
-                let temp = i.vel_vector[0]
-                i.vel_vector[0] = j.vel_vector[0]
-                j.vel_vector[0] = temp
-                console.log("kolizja")
-            }
-                
+function check_collision(){
+    for(let i = 0; i < atoms.length; i++){
+        for(let j = i + 1; j < atoms.length; j++){
+            let dist = Math.abs(atom_distance(atoms[i].pos_vector,atoms[j].pos_vector))
+            if(2*r < dist && dist <= 2*r + d || dist < 2*r){
+                let temp = atoms[i].vel_vector[0]
+                atoms[i].vel_vector[0] = atoms[j].vel_vector[0]
+                atoms[j].vel_vector[0] = temp
+                break
+            }               
         }
     }
 }
 
+// function reset_collision_flag(){
+//     for(const el of atoms){
+//         el.collision = false
+//     }
+// }
+
 function draw_atoms(){
     ctx.clearRect(0,0, canvas.width, canvas.height)
-    check_colision()
+    // reset_collision_flag()
+    check_collision()
     for(const el of atoms){
         el.draw()
         el.move()
