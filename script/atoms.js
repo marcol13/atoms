@@ -93,10 +93,11 @@ function check_collision(){
     for(let i = 0; i < atoms.length-1; i++){
         for(let j = i + 1; j < atoms.length; j++){
             let dist = Math.abs(atom_distance(atoms[i].pos_vector,atoms[j].pos_vector))
+               
             if((2*r <= dist && dist <= 2*r + d) || dist < 2*r){
                 let vector_h = Math.abs(atoms[i].vel_vector[1]) + Math.abs(atoms[j].vel_vector[1])
                 let vector_w = Math.abs(atoms[i].vel_vector[0]) + Math.abs(atoms[j].vel_vector[0])
-                if(vector_w < vector_h){
+                if(vector_w > vector_h){
                     let temp = atoms[i].vel_vector[0]
                     atoms[i].vel_vector[0] = atoms[j].vel_vector[0]
                     atoms[j].vel_vector[0] = temp
@@ -110,7 +111,9 @@ function check_collision(){
                     console.log("kolizja y")
                     break
                 }
-            }               
+            }
+            if(dist < 2*r && )
+                exit_atom(atoms[i], atoms[j])            
         }
     }
 }
@@ -126,8 +129,13 @@ function exit_wall(el,flag){ //flag true - oś x, false - oś y
             el.pos_vector[1] = r
         else if(el.pos_vector[1] + el.r > canvas.height)
             el.pos_vector[1] = canvas.height - r
-    }
-    
+    }    
+}
+
+function exit_atom(el1,el2){
+    let vel_vector = [el1.vel_vector[0] + el2.vel_vector[0], el1.vel_vector[1] + el2.vel_vector[1]]
+    el1.pos_vector[0] -= vel_vector[0]
+    el1.pos_vector[1] -= vel_vector[1]
 }
 
 // function reset_collision_flag(){
