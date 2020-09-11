@@ -90,17 +90,44 @@ function create_atoms(){
 }
 
 function check_collision(){
-    for(let i = 0; i < atoms.length; i++){
+    for(let i = 0; i < atoms.length-1; i++){
         for(let j = i + 1; j < atoms.length; j++){
             let dist = Math.abs(atom_distance(atoms[i].pos_vector,atoms[j].pos_vector))
-            if(2*r < dist && dist <= 2*r + d || dist < 2*r){
-                let temp = atoms[i].vel_vector[0]
-                atoms[i].vel_vector[0] = atoms[j].vel_vector[0]
-                atoms[j].vel_vector[0] = temp
-                break
+            if((2*r <= dist && dist <= 2*r + d) || dist < 2*r){
+                let vector_h = Math.abs(atoms[i].vel_vector[1]) + Math.abs(atoms[j].vel_vector[1])
+                let vector_w = Math.abs(atoms[i].vel_vector[0]) + Math.abs(atoms[j].vel_vector[0])
+                if(vector_w < vector_h){
+                    let temp = atoms[i].vel_vector[0]
+                    atoms[i].vel_vector[0] = atoms[j].vel_vector[0]
+                    atoms[j].vel_vector[0] = temp
+                    console.log("kolizja x")
+                    break
+                }
+                else{
+                    let temp = atoms[i].vel_vector[1]
+                    atoms[i].vel_vector[1] = atoms[j].vel_vector[1]
+                    atoms[j].vel_vector[1] = temp
+                    console.log("kolizja y")
+                    break
+                }
             }               
         }
     }
+}
+
+function exit_wall(el,flag){ //flag true - oś x, false - oś y
+    if(flag === true){
+        if(el.pos_vector[0] - el.r < 0)
+            el.pos_vector[0] = r
+        else if(el.pos_vector[0] + el.r > canvas.width)
+            el.pos_vector[0] = canvas.width - r
+    }else{
+        if(el.pos_vector[1] - el.r < 0)
+            el.pos_vector[1] = r
+        else if(el.pos_vector[1] + el.r > canvas.height)
+            el.pos_vector[1] = canvas.height - r
+    }
+    
 }
 
 // function reset_collision_flag(){
@@ -114,13 +141,16 @@ function draw_atoms(){
     // reset_collision_flag()
     check_collision()
     for(const el of atoms){
-        el.draw()
         el.move()
+        el.draw()
+        
         if(el.pos_vector[0] + el.r >= canvas.width || el.pos_vector[0] - el.r <= 0){
             el.wall_bounce(false)
+            exit_wall(el,true)
         }
         if(el.pos_vector[1] + el.r >= canvas.height || el.pos_vector[1] - el.r <= 0){
             el.wall_bounce(true)
+            exit_wall(el,false)
         }
     }
     window.requestAnimationFrame(draw_atoms)
