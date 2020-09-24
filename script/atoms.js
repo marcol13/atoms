@@ -2,7 +2,7 @@ var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
 atoms = []
-var n = 15 //ilość atomów
+var n = 30 //ilość atomów
 var r = 7 //promień atomów
 var d = 1/10*r // tolerancja zderzenia
 
@@ -11,27 +11,37 @@ class Atom{
     // collision = false
     constructor(r,x,y,vx,vy){
         this.r = r //promień
-        this.pos_vector = [x,y] //wektor położenia
-        this.vel_vector = [vx,vy] //wektor prędkości
+        this.pos = {
+            x: x,
+            y: y
+        } //wektor położenia
+        this.vel = {
+            vx: vx,
+            vy: vy
+        } //wektor prędkości
     }
 
     draw(){
         ctx.beginPath()
-        ctx.arc(this.pos_vector[0], this.pos_vector[1], this.r, 0, Math.PI * 2, false)
+        ctx.arc(this.pos.x, this.pos.y, this.r, 0, Math.PI * 2, false)
         ctx.fill()
     }
 
     move(){
-        this.pos_vector[0] += this.vel_vector[0]
-        this.pos_vector[1] += this.vel_vector[1]
+        this.pos.x += this.vel.vx
+        this.pos.y += this.vel.vy
     }
     
     wall_bounce(opt){ //true - odbicie od górnej lub od dolnej ścianki, false - odbicie od prawej lub lewej ścianki
         if(opt === true)
-            this.vel_vector[1] *= -1
+            this.vel.vy *= -1
         else
-            this.vel_vector[0] *= -1
+            this.vel.vx *= -1
     }
+}
+
+class RedAtom{
+    
 }
 
 class Rect{
@@ -43,7 +53,7 @@ class Rect{
     }
 }
 
-cvs = new Rect(50,20)
+cvs = new Rect(30,30)
 canvas.width = cvs.l * 2
 canvas.height = cvs.h * 2
 
@@ -74,7 +84,7 @@ function create_atoms(){
             if(atom_x + r >= canvas.width || atom_y + r >= canvas.height)
                 continue
             for(let j = 0; j < i; j++){
-                if(atom_distance([atom_x,atom_y],atoms[j].pos_vector) < r){
+                if(atom_distance([atom_x,atom_y],[atoms[j].pos.x,atoms[j].pos.y]) < r){
                     same_pos_flag = true
                     break
                 }
@@ -92,16 +102,16 @@ function create_atoms(){
 function check_collision(){
     for(let i = 0; i < atoms.length-1; i++){
         for(let j = i + 1; j < atoms.length; j++){
-            let dist = Math.abs(atom_distance(atoms[i].pos_vector,atoms[j].pos_vector))
-            let sub_x = atoms[j].pos_vector[0] - atoms[i].pos_vector[0]
-            let sub_y = atoms[j].pos_vector[1] - atoms[i].pos_vector[1]
-            if((2*r <= dist && dist <= 2*r + d) && ((atoms[i].vel_vector[0] * sub_x + atoms[i].vel_vector[1] * sub_y).toFixed(1) > 0 || (atoms[j].vel_vector[0] * (-sub_x) + atoms[j].vel_vector[1] * (-sub_y).toFixed(1) > 0)) || dist < 2*r){
-                let par_x1, par_y1
+            let dist = Math.abs(atom_distance([atoms[i].pos.x,atoms[i].pos.y],[atoms[j].pos.x,atoms[j].pos.y]))
+            let sub_x = atoms[j].pos.x - atoms[i].pos.x //różnica w x
+            let sub_y = atoms[j].pos.y - atoms[i].pos.y //różnica w y
+            if((2*r <= dist && dist <= 2*r + d) && ((atoms[i].vel.vx * sub_x + atoms[i].vel.vy * sub_y).toFixed(1) > 0 || (atoms[j].vel.vx * (-sub_x) + atoms[j].vel.vy * (-sub_y).toFixed(1) > 0)) || dist < 2*r){
+                let par_x1, par_y1 
                 if(sub_x == 0 && sub_y == 0)
                     par_x1 = par_y1 = 0
                 else{
-                    par_x1 = (sub_x * (sub_x * atoms[i].vel_vector[0] + sub_y * atoms[i].vel_vector[1])) / (sub_x ** 2 + sub_y ** 2)
-                    par_y1 = (sub_y * (sub_x * atoms[i].vel_vector[0] + sub_y * atoms[i].vel_vector[1])) / (sub_x ** 2 + sub_y ** 2) 
+                    par_x1 = (sub_x * (sub_x * atoms[i].vel.vx + sub_y * atoms[i].vel.vy)) / (sub_x ** 2 + sub_y ** 2)
+                    par_y1 = (sub_y * (sub_x * atoms[i].vel.vx + sub_y * atoms[i].vel.vy)) / (sub_x ** 2 + sub_y ** 2) 
                 }
                 let par_x2, par_y2
                 sub_x = -sub_x
@@ -109,13 +119,13 @@ function check_collision(){
                 if(sub_x == 0 && sub_y == 0)
                     par_x2 = par_y2 = 0
                 else{
-                    par_x2 = (sub_x * (sub_x * atoms[j].vel_vector[0] + sub_y * atoms[j].vel_vector[1])) / (sub_x ** 2 + sub_y ** 2)
-                    par_y2 = (sub_y * (sub_x * atoms[j].vel_vector[0] + sub_y * atoms[j].vel_vector[1])) / (sub_x ** 2 + sub_y ** 2)
+                    par_x2 = (sub_x * (sub_x * atoms[j].vel.vx + sub_y * atoms[j].vel.vy)) / (sub_x ** 2 + sub_y ** 2)
+                    par_y2 = (sub_y * (sub_x * atoms[j].vel.vx + sub_y * atoms[j].vel.vy)) / (sub_x ** 2 + sub_y ** 2)
                 }
-                atoms[i].vel_vector[0] = atoms[i].vel_vector[0] - par_x1 + par_x2
-                atoms[i].vel_vector[1] = atoms[i].vel_vector[1] - par_y1 + par_y2
-                atoms[j].vel_vector[0] = atoms[j].vel_vector[0] - par_x2 + par_x1
-                atoms[j].vel_vector[1] = atoms[j].vel_vector[1] - par_y2 + par_y1    
+                atoms[i].vel.vx = atoms[i].vel.vx - par_x1 + par_x2
+                atoms[i].vel.vy = atoms[i].vel.vy - par_y1 + par_y2
+                atoms[j].vel.vx = atoms[j].vel.vx - par_x2 + par_x1
+                atoms[j].vel.vy = atoms[j].vel.vy - par_y2 + par_y1    
             } 
         }
     }
@@ -123,15 +133,15 @@ function check_collision(){
 
 function exit_wall(el,flag){ //flag true - oś x, false - oś y
     if(flag === true){
-        if(el.pos_vector[0] - el.r < 0)
-            el.pos_vector[0] = r
-        else if(el.pos_vector[0] + el.r > canvas.width)
-            el.pos_vector[0] = canvas.width - r
+        if(el.pos.x - el.r < 0)
+            el.pos.x = r
+        else if(el.pos.x + el.r > canvas.width)
+            el.pos.x = canvas.width - r
     }else{
-        if(el.pos_vector[1] - el.r < 0)
-            el.pos_vector[1] = r
-        else if(el.pos_vector[1] + el.r > canvas.height)
-            el.pos_vector[1] = canvas.height - r
+        if(el.pos.y - el.r < 0)
+            el.pos.y = r
+        else if(el.pos.y + el.r > canvas.height)
+            el.pos.y = canvas.height - r
     }    
 }
 
@@ -149,11 +159,11 @@ function draw_atoms(){
         el.move()
         el.draw()
         
-        if(el.pos_vector[0] + el.r >= canvas.width || el.pos_vector[0] - el.r <= 0){
+        if(el.pos.x + el.r >= canvas.width || el.pos.x - el.r <= 0){
             el.wall_bounce(false)
             exit_wall(el,true)
         }
-        if(el.pos_vector[1] + el.r >= canvas.height || el.pos_vector[1] - el.r <= 0){
+        if(el.pos.y + el.r >= canvas.height || el.pos.y - el.r <= 0){
             el.wall_bounce(true)
             exit_wall(el,false)
         }
