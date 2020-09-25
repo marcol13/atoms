@@ -1,5 +1,7 @@
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
+var dist_chart = document.querySelector('.dist-chart')
+var avg_dist = document.querySelector('.avg-distance')
 
 atoms = []
 var n = 30 //ilość atomów
@@ -24,6 +26,7 @@ class Atom{
     draw(){
         ctx.beginPath()
         ctx.arc(this.pos.x, this.pos.y, this.r, 0, Math.PI * 2, false)
+        ctx.fillStyle = "black"
         ctx.fill()
     }
 
@@ -40,8 +43,23 @@ class Atom{
     }
 }
 
-class RedAtom{
-    
+class RedAtom extends Atom{
+    dist = [0]
+
+    draw(){
+        ctx.beginPath()
+        ctx.arc(this.pos.x, this.pos.y, this.r, 0, Math.PI * 2, false)
+        ctx.fillStyle = "#FE383E"
+        ctx.fill()
+    }
+
+    calc_distance(){
+        this.dist[this.dist.length - 1] += parseFloat(Math.sqrt(Math.pow(this.vel.vx,2) + Math.pow(this.vel.vy,2)))
+    }
+
+    calc_avg(){
+        return this.dist.reduce((a,b) => a + b, 0)/this.dist.length
+    }
 }
 
 class Rect{
@@ -71,7 +89,7 @@ function random_sign(){
 }
 
 function create_atoms(){
-    for(var i = 0; i < n; i++){
+    for(let i = 0; i < n; i++){
         let atom_x
         let atom_y
         let flag = false
@@ -80,7 +98,6 @@ function create_atoms(){
             same_pos_flag = false
             atom_x = random_value(r,canvas.width)
             atom_y = random_value(r,canvas.height)
-            console.log(atom_x,atom_y)
             if(atom_x + r >= canvas.width || atom_y + r >= canvas.height)
                 continue
             for(let j = 0; j < i; j++){
@@ -95,7 +112,10 @@ function create_atoms(){
         }
         atom_vx = random_value(1,4) * random_sign()
         atom_vy = random_value(1,4) * random_sign()
-        atoms.push(new Atom(r, atom_x, atom_y, atom_vx, atom_vy))
+        if(i == 0)
+            atoms.push(new RedAtom(r, atom_x, atom_y, atom_vx, atom_vy))
+        else
+            atoms.push(new Atom(r, atom_x, atom_y, atom_vx, atom_vy))
     }
 }
 
@@ -125,7 +145,24 @@ function check_collision(){
                 atoms[i].vel.vx = atoms[i].vel.vx - par_x1 + par_x2
                 atoms[i].vel.vy = atoms[i].vel.vy - par_y1 + par_y2
                 atoms[j].vel.vx = atoms[j].vel.vx - par_x2 + par_x1
-                atoms[j].vel.vy = atoms[j].vel.vy - par_y2 + par_y1    
+                atoms[j].vel.vy = atoms[j].vel.vy - par_y2 + par_y1 
+                if(atoms[i] instanceof RedAtom){
+                    Plotly.extendTraces(dist_chart,{
+                        y: [[atoms[0].dist[atoms[0].dist.length-1]]]
+                    }, [0])
+                    move_chart(cnt)
+                    cnt++
+                    atoms[i].dist.push(0)
+                }
+                if(atoms[j] instanceof RedAtom){
+                    Plotly.extendTraces(dist_chart,{
+                        y: [[atoms[0].dist[atoms[0].dist.length-1]]]
+                    }, [0])
+                    move_chart(cnt)
+                    cnt++
+                    atoms[j].dist.push(0)
+                }
+                    
             } 
         }
     }
@@ -167,12 +204,35 @@ function draw_atoms(){
             el.wall_bounce(true)
             exit_wall(el,false)
         }
+        if(el instanceof RedAtom)
+            el.calc_distance()
     }
     window.requestAnimationFrame(draw_atoms)
 }
 create_atoms()
 // window.requestAnimationFrame(draw_atoms)
 draw_atoms()
+
+setInterval(function(){
+    avg_dist.innerHTML = atoms[0].calc_avg().toFixed(2)
+},1000)
+
+
+function move_chart(cnt){
+    if(cnt > 100){
+        Plotly.relayout(dist_chart,{
+            xaxis:{
+                range: [cnt-300,cnt]
+            }
+        })
+    }
+}
+
+var cnt = 0
+Plotly.plot(dist_chart,[{y:atoms[0].dist, type: 'line'}])
+
+
+
 
 
 // function change_n(x){
