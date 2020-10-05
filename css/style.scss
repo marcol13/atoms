@@ -1,11 +1,145 @@
+$h1-size: 50px;
+
 *{
     margin: 0;
     box-sizing: border-box;
 }
 
+body{
+    background-color: white;
+
+    .ready{
+        transition: 4s all;
+    }
+
+    .close{
+        transform: translateY(-100vh);
+    }
+
+    @keyframes next-page{
+        from{
+            top: 0;
+        }
+
+        to{
+            top: 1000;
+            display: none;
+        }
+    }
+}
+
+div.menu{
+    $img-width: 500px;
+    $h1-width: 600px;
+    $button-width: 200px;
+    $button-height: 100px;
+
+    font-family: 'Indie Flower', cursive;
+
+    h1.title{
+        width: $h1-width;
+        position: absolute;
+        font-size: $h1-size;
+        margin-top: $img-width * 0.3;
+        text-transform: uppercase;
+        animation: 3s text-start;
+        left: calc(50% - (#{$h1-width}/2));
+    }
+
+    .atom-img{
+        position: absolute;
+        top: calc(50% - (#{$img-width} / 2));
+        left: -$img-width/4;
+        width: $img-width;
+        animation-duration: 10s;
+        animation-name: rotate-atom; 
+        animation-iteration-count: infinite;
+        animation-fill-mode: forwards;
+    }
+
+    button.start{
+        visibility: hidden;
+        width: $button-width;
+        height: $button-height;
+        text-transform: uppercase;
+        position: absolute;
+        font-family: inherit;
+        font-weight: bold;
+        font-size: $h1-size * 0.5;
+        background-color: white;
+        border: 2px solid black;
+        cursor: pointer;
+        top: calc(50% - (#{$button-height}/2));
+        left: calc(50% - (#{$button-width}/2));
+        animation: 2s 3s 1 show forwards;
+        // animation: 1500ms 5s move linear infinite;
+    }
+
+    button.shake{
+        // animation: 1500ms 5s infinite move linear;
+    }
+
+    @keyframes text-start{
+        from{
+            left: -40%;
+        }
+
+        to{
+            left: calc(50% - (#{$h1-width}/2));
+        }
+    }
+
+    @keyframes rotate-atom{
+        from{
+            transform: rotate(0deg);
+        }
+        to{
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes show{
+        from{
+            opacity: 0%;
+        }
+
+        to{
+            visibility: visible;
+            opacity: 100%;
+        }
+    }
+
+    @keyframes move{
+        17%,48%,80%{
+            transform: translate(0,0);
+        }
+
+        2%{
+            transform: translate(2px,2px);
+        }
+
+        32%{
+            transform: translate(2px,-2px);
+        }
+
+        62%{
+            transform: translate(-1px,2px);
+        }
+
+        88%{
+            transform: translate(-2px,1px);
+        }
+    }
+}
+
 div.content{
+    display: none;
     canvas{
         border: black 3px solid;
         margin: 50px;
     }
+}
+
+footer{
+    display: none;
 }
