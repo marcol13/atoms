@@ -45,14 +45,27 @@ body .atom-img {
   }
 }
 
-body .ready {
-  -webkit-transition: 4s all;
-  transition: 4s all;
+body .remove {
+  display: none !important;
 }
 
 body .close {
-  -webkit-transform: translateY(-100vh);
-          transform: translateY(-100vh);
+  -webkit-animation: up 4s 1;
+          animation: up 4s 1;
+}
+
+@-webkit-keyframes up {
+  to {
+    -webkit-transform: translateY(-100vh);
+            transform: translateY(-100vh);
+  }
+}
+
+@keyframes up {
+  to {
+    -webkit-transform: translateY(-100vh);
+            transform: translateY(-100vh);
+  }
 }
 
 @-webkit-keyframes next-page {
@@ -85,19 +98,19 @@ div.menu h1.title {
   font-size: 50px;
   margin-top: 150px;
   text-transform: uppercase;
-  -webkit-transition: -webkit-transform 3s ease-out;
-  transition: -webkit-transform 3s ease-out;
-  transition: transform 3s ease-out;
-  transition: transform 3s ease-out, -webkit-transform 3s ease-out;
-  left: -40%;
+  -webkit-transition: -webkit-transform 3s cubic-bezier(0, 0.93, 0.31, 0.97), -webkit-animation;
+  transition: -webkit-transform 3s cubic-bezier(0, 0.93, 0.31, 0.97), -webkit-animation;
+  transition: transform 3s cubic-bezier(0, 0.93, 0.31, 0.97), animation;
+  transition: transform 3s cubic-bezier(0, 0.93, 0.31, 0.97), animation, -webkit-transform 3s cubic-bezier(0, 0.93, 0.31, 0.97), -webkit-animation;
+  left: 0;
 }
 
 div.menu .go {
-  -webkit-transform: translateX(240%);
-          transform: translateX(240%);
+  -webkit-transform: translateX(calc(50vw - (600px/2)));
+          transform: translateX(calc(50vw - (600px/2)));
 }
 
-div.menu button.start {
+div.menu button.btn {
   visibility: hidden;
   width: 200px;
   height: 100px;
@@ -109,33 +122,16 @@ div.menu button.start {
   background-color: white;
   border: 2px solid black;
   cursor: pointer;
+  opacity: 0;
   top: calc(50% - (100px/2));
   left: calc(50% - (200px/2));
-  -webkit-animation: 2s 3s 1 show forwards;
-          animation: 2s 3s 1 show forwards;
+  -webkit-transition: opacity 3s ease;
+  transition: opacity 3s ease;
 }
 
-div.menu button.shake {
-  -webkit-animation: 1500ms 5s infinite move linear;
-          animation: 1500ms 5s infinite move linear;
-}
-
-@-webkit-keyframes text-start {
-  from {
-    left: -40%;
-  }
-  to {
-    left: calc(50% - (600px/2));
-  }
-}
-
-@keyframes text-start {
-  from {
-    left: -40%;
-  }
-  to {
-    left: calc(50% - (600px/2));
-  }
+div.menu .show {
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 @-webkit-keyframes show {
