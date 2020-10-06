@@ -1,4 +1,5 @@
 $h1-size: 50px;
+$img-width: 500px;
 
 *{
     margin: 0;
@@ -8,6 +9,26 @@ $h1-size: 50px;
 body{
     background-color: white;
 
+    .atom-img{
+        position: absolute;
+        top: calc(50% - (#{$img-width} / 2));
+        left: -$img-width/4;
+        width: $img-width;
+        animation-duration: 10s;
+        animation-name: rotate-atom; 
+        animation-iteration-count: infinite;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes rotate-atom{
+        from{
+            transform: rotate(0deg);
+        }
+        to{
+            transform: rotate(360deg);
+        }
+    }
+    
     .ready{
         transition: 4s all;
     }
@@ -29,7 +50,7 @@ body{
 }
 
 div.menu{
-    $img-width: 500px;
+    
     $h1-width: 600px;
     $button-width: 200px;
     $button-height: 100px;
@@ -42,20 +63,15 @@ div.menu{
         font-size: $h1-size;
         margin-top: $img-width * 0.3;
         text-transform: uppercase;
-        animation: 3s text-start;
-        left: calc(50% - (#{$h1-width}/2));
+        transition: transform 3s ease-out;
+        left: -40%;
     }
 
-    .atom-img{
-        position: absolute;
-        top: calc(50% - (#{$img-width} / 2));
-        left: -$img-width/4;
-        width: $img-width;
-        animation-duration: 10s;
-        animation-name: rotate-atom; 
-        animation-iteration-count: infinite;
-        animation-fill-mode: forwards;
+    .go{
+        transform: translateX(240%);
     }
+
+    
 
     button.start{
         visibility: hidden;
@@ -76,7 +92,8 @@ div.menu{
     }
 
     button.shake{
-        // animation: 1500ms 5s infinite move linear;
+        // animation: 2s 3s 1 show forwards, 1500ms 3s infinite move linear;
+        animation: 1500ms 5s infinite move linear;
     }
 
     @keyframes text-start{
@@ -86,15 +103,6 @@ div.menu{
 
         to{
             left: calc(50% - (#{$h1-width}/2));
-        }
-    }
-
-    @keyframes rotate-atom{
-        from{
-            transform: rotate(0deg);
-        }
-        to{
-            transform: rotate(360deg);
         }
     }
 
