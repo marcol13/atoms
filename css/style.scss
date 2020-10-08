@@ -9,16 +9,15 @@ $h1-width: 600px;
 
 body{
     background-color: white;
+    font-family: 'Indie Flower', cursive;
+    overflow: hidden;
 
     .atom-img{
         position: absolute;
         top: calc(50% - (#{$img-width} / 2));
         left: -$img-width/4;
         width: $img-width;
-        animation-duration: 10s;
-        animation-name: rotate-atom; 
-        animation-iteration-count: infinite;
-        animation-fill-mode: forwards;
+        animation: rotate-atom 10s infinite forwards;
     }
 
     @keyframes rotate-atom{
@@ -34,113 +33,89 @@ body{
         display: none !important;
     }
 
-    .close{
-        animation: up 4s 1;
-        // left: calc(50vw - (#{$h1-width}/2)) !important;
-    }
+    div.container-menu{
+        $button-width: 200px;
+        $button-height: 100px;
 
-    @keyframes up {
-        to{
-            transform: translateY(-100vh);
+        transition: transform 2s ease;
+
+        div{
+            width: 100vw;
+            height: 100vh;
         }
-    }
-
-    @keyframes next-page{
-        from{
-            top: 0;
-        }
-
-        to{
-            top: 1000;
-            display: none;
-        }
-    }
-}
-
-div.menu{
     
-    $h1-width: 600px;
-    $button-width: 200px;
-    $button-height: 100px;
-
-    font-family: 'Indie Flower', cursive;
-
-    h1.title{
-        width: $h1-width;
-        position: absolute;
-        font-size: $h1-size;
-        margin-top: $img-width * 0.3;
-        text-transform: uppercase;
-        transition: transform 3s cubic-bezier(0,.93,.31,.97), animation ;
-        left: 0;
-    }
-
-    .go{
-        transform: translateX(calc(50vw - (#{$h1-width}/2)));
-    }
-
+        h1.title{
+            width: $h1-width;
+            position: absolute;
+            font-size: $h1-size;
+            margin-top: $img-width * 0.3;
+            text-transform: uppercase;
+            transition: transform 3s cubic-bezier(0,.93,.31,.97);
+            left: 0;
+        }
     
-
-    button.btn{
-        visibility: hidden;
-        width: $button-width;
-        height: $button-height;
-        text-transform: uppercase;
-        position: absolute;
-        font-family: inherit;
-        font-weight: bold;
-        font-size: $h1-size * 0.5;
-        background-color: white;
-        border: 2px solid black;
-        cursor: pointer;
-        opacity: 0;
-        top: calc(50% - (#{$button-height}/2));
-        left: calc(50% - (#{$button-width}/2));
-        transition: opacity 3s ease;
-        // animation: 2s 3s 1 show forwards;
-        // animation: 1500ms 5s move linear infinite;
-    }
-
-    // button.shake{
-    //     // animation: 2s 3s 1 show forwards, 1500ms 3s infinite move linear;
-    //     animation: 1500ms 5s infinite move linear;
-    // }
-
-    .show{
-        visibility: visible !important;
-        opacity: 1 !important;
-    }
-
-    @keyframes show{
-        from{
-            opacity: 0%;
+        .go{
+            transform: translateX(calc(50vw - (#{$h1-width}/2)));
         }
-
-        to{
-            visibility: visible;
-            opacity: 100%;
+    
+        
+    
+        button.btn{
+            visibility: hidden;
+            width: $button-width;
+            height: $button-height;
+            text-transform: uppercase;
+            position: absolute;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: $h1-size * 0.5;
+            background-color: white;
+            border: 2px solid black;
+            cursor: pointer;
+            opacity: 0;
+            // top: calc(50% - (#{$button-height}/2));
+            margin-top: $img-width * 0.75;
+            left: calc(50% - (#{$button-width}/2));
+            transition: opacity 3s ease;
+            animation: 1500ms move linear infinite;
         }
-    }
-
-    @keyframes move{
-        17%,48%,80%{
-            transform: translate(0,0);
+    
+        .show{
+            visibility: visible !important;
+            opacity: 1 !important;
         }
-
-        2%{
-            transform: translate(2px,2px);
+    
+        @keyframes show{
+            from{
+                opacity: 0%;
+            }
+    
+            to{
+                visibility: visible;
+                opacity: 100%;
+            }
         }
-
-        32%{
-            transform: translate(2px,-2px);
-        }
-
-        62%{
-            transform: translate(-1px,2px);
-        }
-
-        88%{
-            transform: translate(-2px,1px);
+    
+        @keyframes move{
+            17%,48%,80%{
+                transform: translate(0,0);
+            }
+    
+            2%{
+                transform: translate(2px,2px);
+            }
+    
+            32%{
+                transform: translate(2px,-2px);
+            }
+    
+            62%{
+                transform: translate(-1px,2px);
+            }
+    
+            88%{
+                transform: translate(-2px,1px);
+            }
         }
     }
 }
