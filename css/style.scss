@@ -2,7 +2,7 @@ $h1-size: 50px;
 $img-width: 500px;
 $h1-width: 600px;
 
-*{
+*, *::before, *::after{
     margin: 0;
     box-sizing: border-box;
 }
@@ -13,11 +13,21 @@ body{
     overflow: hidden;
 
     .atom-img{
+        width: $img-width;
+        animation: rotate-atom 10s infinite forwards;
+    }
+
+    .img-container{
         position: absolute;
         top: calc(50% - (#{$img-width} / 2));
         left: -$img-width/4;
-        width: $img-width;
-        animation: rotate-atom 10s infinite forwards;
+        transition: transform 4s ease;
+    }
+
+    .rotate-to-exit{
+        // transform-origin: translate(100%,0);
+        // transform: rotate(-90deg);
+        transform: translateX(-50vw);
     }
 
     @keyframes rotate-atom{
@@ -25,7 +35,7 @@ body{
             transform: rotate(0deg);
         }
         to{
-            transform: rotate(360deg);
+            transform: rotate(-360deg);
         }
     }
 
@@ -33,23 +43,22 @@ body{
         display: none !important;
     }
 
+    h1{
+        width: $h1-width;
+        font-size: $h1-size;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
     div.container-menu{
         $button-width: 200px;
         $button-height: 100px;
 
-        transition: transform 2s ease;
-
-        div{
-            width: 100vw;
-            height: 100vh;
-        }
+        transition: transform 3s ease;
     
         h1.title{
-            width: $h1-width;
             position: absolute;
-            font-size: $h1-size;
             margin-top: $img-width * 0.3;
-            text-transform: uppercase;
             transition: transform 3s cubic-bezier(0,.93,.31,.97);
             left: 0;
         }
@@ -58,25 +67,28 @@ body{
             transform: translateX(calc(50vw - (#{$h1-width}/2)));
         }
     
-        
-    
         button.btn{
-            visibility: hidden;
             width: $button-width;
             height: $button-height;
             text-transform: uppercase;
-            position: absolute;
             font-family: inherit;
             font-weight: bold;
             font-size: $h1-size * 0.5;
             background-color: white;
             border: 2px solid black;
             cursor: pointer;
+        }
+
+        .first-btn{
+            position: absolute;
+            visibility: hidden;
             opacity: 0;
-            // top: calc(50% - (#{$button-height}/2));
+            transition: opacity 3s ease;
             margin-top: $img-width * 0.75;
             left: calc(50% - (#{$button-width}/2));
-            transition: opacity 3s ease;
+        }
+
+        .shake{
             animation: 1500ms move linear infinite;
         }
     
@@ -117,6 +129,30 @@ body{
                 transform: translate(-2px,1px);
             }
         }
+
+        div.options, form{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        form input{
+            margin: 30px;
+            width: $button-width*2;
+            height: $button-height/2;
+            text-align: center;
+        }
+
+        form input, form input::placeholder{
+            font-family: 'Indie Flower', cursive;
+            font-size: 1.2em;
+        }
+    }
+
+    div.container-menu > div{
+        width: 100vw;
+        height: 100vh;
     }
 }
 

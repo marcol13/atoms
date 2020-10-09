@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,29 +9,39 @@
     <title>Fizyka - atomy</title>
 </head>
 <body>
-    <img src="img/science.svg" alt="" class="atom-img">
+    <div class="img-container">
+        <img src="img/science.svg" alt="" class="atom-img">
+    </div>
     <div class="container-menu">
         <div class="menu welcome">
             <h1 class="title">Atom bounce generator</h1>
-            <button class="btn">Get started</button>
+            <button class="btn shake first-btn">Get started</button>
         </div>
         <div class="menu options">
-            <h1>SIEMA</h1>
+            <h1>Input data</h1>
+            <form>
+                <input type="text" id="quantity" class="atom-data" placeholder="Quantity of atoms">
+                <input type="text" id="radius" class="atom-data" placeholder="Atom radius">
+                <input type="text" class="atom-data">
+                <input type="text" class="atom-data">
+            </form>
+            <button class="btn shake">Start simulation</button>
+        </div>
+        <div class="content">
+            <canvas></canvas>
+            <div class="avg-distance">
+                
+            </div>
+            <div class="dist-chart">
+                
+            </div>
         </div>
     </div>
     
     
-    <div class="content">
-        <canvas></canvas>
-        <div class="avg-distance">
-            
-        </div>
-        <div class="dist-chart">
-            
-        </div>
-    </div>
-    <script src="script/script.js"></script>
+    
     <script src="script/atoms.js"></script>
+    <script src="script/script.js"></script>
     <footer>
         <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
     </footer>

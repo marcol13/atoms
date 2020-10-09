@@ -1,4 +1,4 @@
-* {
+*, *::before, *::after {
   margin: 0;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -11,12 +11,24 @@ body {
 }
 
 body .atom-img {
-  position: absolute;
-  top: calc(50% - (500px / 2));
-  left: -125px;
   width: 500px;
   -webkit-animation: rotate-atom 10s infinite forwards;
           animation: rotate-atom 10s infinite forwards;
+}
+
+body .img-container {
+  position: absolute;
+  top: calc(50% - (500px / 2));
+  left: -125px;
+  -webkit-transition: -webkit-transform 4s ease;
+  transition: -webkit-transform 4s ease;
+  transition: transform 4s ease;
+  transition: transform 4s ease, -webkit-transform 4s ease;
+}
+
+body .rotate-to-exit {
+  -webkit-transform: translateX(-50vw);
+          transform: translateX(-50vw);
 }
 
 @-webkit-keyframes rotate-atom {
@@ -25,8 +37,8 @@ body .atom-img {
             transform: rotate(0deg);
   }
   to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg);
   }
 }
 
@@ -36,8 +48,8 @@ body .atom-img {
             transform: rotate(0deg);
   }
   to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg);
   }
 }
 
@@ -45,24 +57,23 @@ body .remove {
   display: none !important;
 }
 
-body div.container-menu {
-  -webkit-transition: -webkit-transform 2s ease;
-  transition: -webkit-transform 2s ease;
-  transition: transform 2s ease;
-  transition: transform 2s ease, -webkit-transform 2s ease;
+body h1 {
+  width: 600px;
+  font-size: 50px;
+  text-transform: uppercase;
+  text-align: center;
 }
 
-body div.container-menu div {
-  width: 100vw;
-  height: 100vh;
+body div.container-menu {
+  -webkit-transition: -webkit-transform 3s ease;
+  transition: -webkit-transform 3s ease;
+  transition: transform 3s ease;
+  transition: transform 3s ease, -webkit-transform 3s ease;
 }
 
 body div.container-menu h1.title {
-  width: 600px;
   position: absolute;
-  font-size: 50px;
   margin-top: 150px;
-  text-transform: uppercase;
   -webkit-transition: -webkit-transform 3s cubic-bezier(0, 0.93, 0.31, 0.97);
   transition: -webkit-transform 3s cubic-bezier(0, 0.93, 0.31, 0.97);
   transition: transform 3s cubic-bezier(0, 0.93, 0.31, 0.97);
@@ -76,22 +87,28 @@ body div.container-menu .go {
 }
 
 body div.container-menu button.btn {
-  visibility: hidden;
   width: 200px;
   height: 100px;
   text-transform: uppercase;
-  position: absolute;
   font-family: inherit;
   font-weight: bold;
   font-size: 25px;
   background-color: white;
   border: 2px solid black;
   cursor: pointer;
+}
+
+body div.container-menu .first-btn {
+  position: absolute;
+  visibility: hidden;
   opacity: 0;
-  margin-top: 375px;
-  left: calc(50% - (200px/2));
   -webkit-transition: opacity 3s ease;
   transition: opacity 3s ease;
+  margin-top: 375px;
+  left: calc(50% - (200px/2));
+}
+
+body div.container-menu .shake {
   -webkit-animation: 1500ms move linear infinite;
           animation: 1500ms move linear infinite;
 }
@@ -165,6 +182,54 @@ body div.container-menu .show {
     -webkit-transform: translate(-2px, 1px);
             transform: translate(-2px, 1px);
   }
+}
+
+body div.container-menu div.options, body div.container-menu form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+body div.container-menu form input {
+  margin: 30px;
+  width: 400px;
+  height: 50px;
+  text-align: center;
+}
+
+body div.container-menu form input, body div.container-menu form input::-webkit-input-placeholder {
+  font-family: 'Indie Flower', cursive;
+  font-size: 1.2em;
+}
+
+body div.container-menu form input, body div.container-menu form input:-ms-input-placeholder {
+  font-family: 'Indie Flower', cursive;
+  font-size: 1.2em;
+}
+
+body div.container-menu form input, body div.container-menu form input::-ms-input-placeholder {
+  font-family: 'Indie Flower', cursive;
+  font-size: 1.2em;
+}
+
+body div.container-menu form input, body div.container-menu form input::placeholder {
+  font-family: 'Indie Flower', cursive;
+  font-size: 1.2em;
+}
+
+body div.container-menu > div {
+  width: 100vw;
+  height: 100vh;
 }
 
 div.content {
