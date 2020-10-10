@@ -19,11 +19,15 @@
         </div>
         <div class="menu options">
             <h1>Input data</h1>
-            <form>
-                <input type="text" id="quantity" class="atom-data" placeholder="Quantity of atoms">
-                <input type="text" id="radius" class="atom-data" placeholder="Atom radius">
-                <input type="text" class="atom-data">
-                <input type="text" class="atom-data">
+            <form autocomplete="off">
+                <input type="number" min="1" max="50" required pattern="[0-9]{2}" id="quantity" class="atom-data" placeholder="Quantity of atoms [1-50]" title="Please input number [1-50]">
+                <div class="input-div"></div>
+                <input type="number" min="1" max="10" required pattern="[0-9]{2}" id="radius" class="atom-data" placeholder="Atom radius [1-10]" >
+                <div class="input-div"></div>
+                <input type="number" min="1" max="10" required pattern="[0-9]{2}" class="atom-data" placeholder="Min velocity [1-10]">
+                <div class="input-div"></div>
+                <input type="number" min="1" max="10" required pattern="[0-9]{2}" class="atom-data" placeholder="Max velocity [min-10]">
+                <div class="input-div"></div>
             </form>
             <button class="btn shake">Start simulation</button>
         </div>
@@ -35,6 +39,7 @@
             <div class="dist-chart">
                 
             </div>
+            <button class="btn rst">Reset</button>
         </div>
     </div>
     

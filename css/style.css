@@ -201,30 +201,57 @@ body div.container-menu div.options, body div.container-menu form {
 }
 
 body div.container-menu form input {
+  position: relative;
   margin: 30px;
   width: 400px;
   height: 50px;
   text-align: center;
 }
 
+body div.container-menu form .input-div {
+  position: relative;
+  width: 400px;
+}
+
 body div.container-menu form input, body div.container-menu form input::-webkit-input-placeholder {
   font-family: 'Indie Flower', cursive;
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 
 body div.container-menu form input, body div.container-menu form input:-ms-input-placeholder {
   font-family: 'Indie Flower', cursive;
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 
 body div.container-menu form input, body div.container-menu form input::-ms-input-placeholder {
   font-family: 'Indie Flower', cursive;
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 
 body div.container-menu form input, body div.container-menu form input::placeholder {
   font-family: 'Indie Flower', cursive;
-  font-size: 1.2em;
+  font-size: 1.3em;
+}
+
+body div.container-menu form input:invalid + .input-div:after {
+  content: 'Invalid data';
+}
+
+body div.container-menu form input:out-of-range + .input-div:after {
+  content: 'Out of range' !important;
+}
+
+body div.container-menu form input:valid + .input-div:after {
+  content: 'Correct data';
+}
+
+body div.container-menu form .input-div:after {
+  content: '';
+  position: absolute;
+  display: block;
+  width: inherit;
+  text-align: center;
+  top: -30px;
 }
 
 body div.container-menu > div {

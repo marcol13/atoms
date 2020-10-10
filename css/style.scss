@@ -138,15 +138,44 @@ body{
         }
 
         form input{
+            position: relative;
             margin: 30px;
             width: $button-width*2;
             height: $button-height/2;
             text-align: center;
         }
 
+        form .input-div{
+            // display: none;
+            position: relative;
+            width: $button-width*2
+        }
+
         form input, form input::placeholder{
             font-family: 'Indie Flower', cursive;
-            font-size: 1.2em;
+            font-size: 1.3em;
+        }
+
+        form input:invalid + .input-div:after {
+            content: 'Invalid data';
+        }
+
+        form input:out-of-range + .input-div:after {
+            content: 'Out of range' !important;
+        }
+
+        form input:valid + .input-div:after{
+            content: 'Correct data';
+        }
+
+        form .input-div:after{
+            content: '';
+            position: absolute;
+            display: block;
+            width: inherit;
+            text-align: center;
+            top: -30px;
+            // right: -200px;
         }
     }
 
